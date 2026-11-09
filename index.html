@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>售后智服 · AI 产品 / 解决方案作品（Dify Chatflow）</title>
+<meta name="description" content="AI 产品 / 解决方案作品：一个会查订单、会查政策、该转人工就转人工的电商售后 AI 助手。30 条分层评测 28/30，平均响应 7.0s。">
+<style>
+  :root{
+    --ink:#17181a; --muted:#6b7280; --line:#e6e4df; --bg:#fbfaf7;
+    --accent:#1d4ed8; --accent-soft:#eef2ff; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.75; font-size:16px; -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:940px; margin:0 auto; padding:0 24px}
+  header{padding:72px 0 40px; border-bottom:1px solid var(--line)}
+  .kicker{font-size:13px; letter-spacing:.12em; color:var(--muted); text-transform:uppercase; margin-bottom:14px}
+  h1{font-size:clamp(30px,5vw,44px); line-height:1.2; margin:0 0 18px; letter-spacing:-.01em}
+  .lede{font-size:clamp(17px,2.2vw,20px); color:#33363b; max-width:760px; margin:0 0 22px}
+  .lede strong{background:linear-gradient(transparent 62%, #dbeafe 62%); font-weight:600}
+  .meta{display:flex; flex-wrap:wrap; gap:10px 18px; font-size:14px; color:var(--muted)}
+  .meta span::before{content:""; display:inline-block; width:5px; height:5px; border-radius:50%; background:#c7c7c7; margin-right:8px; vertical-align:middle}
+
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin:36px 0 0; border-radius:12px; overflow:hidden}
+  .stat{background:var(--card); padding:20px 18px}
+  .stat b{display:block; font-size:26px; letter-spacing:-.02em; line-height:1.2}
+  .stat small{display:block; color:var(--muted); font-size:13px; margin-top:6px}
+
+  section{padding:56px 0; border-bottom:1px solid var(--line)}
+  h2{font-size:24px; margin:0 0 8px; letter-spacing:-.01em}
+  h2 .idx{font-size:13px; color:var(--muted); font-weight:400; margin-right:10px; letter-spacing:.08em}
+  .sub{color:var(--muted); font-size:15px; margin:0 0 28px}
+  h3{font-size:17px; margin:32px 0 10px}
+  p{margin:0 0 16px}
+  ul{margin:0 0 16px; padding-left:20px}
+  li{margin:6px 0}
+  .cols{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px}
+  .card h4{margin:0 0 8px; font-size:15px}
+  .card p{margin:0; font-size:14px; color:#4b4f55}
+  .num{display:inline-flex; width:22px; height:22px; border-radius:6px; background:var(--accent-soft); color:var(--accent); font-size:12px; align-items:center; justify-content:center; margin-right:8px; font-weight:600}
+
+  .flow{margin:26px 0 8px}
+  .flow-top{display:flex; align-items:center; gap:12px; justify-content:center; margin-bottom:18px; flex-wrap:wrap}
+  .node{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 16px; font-size:14px; font-weight:500}
+  .node.primary{border-color:#bfd0ff; background:var(--accent-soft); color:#163b9e}
+  .arrow{color:#b9b9b9; font-size:18px}
+  .lanes{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
+  .lane{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 14px; border-top:3px solid #d7d7d7}
+  .lane.policy{border-top-color:#2563eb}
+  .lane.order{border-top-color:#0f9d6e}
+  .lane.complaint{border-top-color:#d97706}
+  .lane.refuse{border-top-color:#9ca3af}
+  .lane b{display:block; font-size:14px; margin-bottom:8px}
+  .lane .step{font-size:13px; color:#5b6068; padding:5px 0; border-top:1px dashed #ececea}
+  .lane .step:first-of-type{border-top:0}
+
+  .decisions{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:24px}
+  .decision{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px}
+  .decision b{font-size:14px}
+  .decision p{font-size:14px; color:#4b4f55; margin:6px 0 0}
+
+  .video-box{background:#000; border-radius:12px; overflow:hidden; border:1px solid var(--line)}
+  video{display:block; width:100%; height:auto}
+  .video-note{font-size:13px; color:var(--muted); margin-top:10px}
+
+  .shots{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px}
+  .shot{background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden}
+  .shot img{display:block; width:100%; height:auto; cursor:zoom-in}
+  .shot figcaption{font-size:12px; color:var(--muted); padding:8px 10px; border-top:1px solid var(--line)}
+  figure{margin:0}
+
+  .table-wrap{overflow-x:auto; margin:18px 0}
+  table{border-collapse:collapse; width:100%; font-size:14px; background:var(--card)}
+  th,td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top}
+  th{background:#f6f5f1; font-weight:600; white-space:nowrap}
+  td.num,th.num{text-align:right; white-space:nowrap}
+  tr.total td{background:#fafaf7; font-weight:600}
+  .tag{display:inline-block; font-size:12px; padding:1px 8px; border-radius:99px; background:var(--accent-soft); color:#163b9e; margin-right:6px}
+
+  .note{background:#fff; border-left:3px solid #d97706; padding:14px 18px; font-size:14px; color:#4b4f55; border-radius:0 10px 10px 0; margin:18px 0}
+  .note.blue{border-left-color:var(--accent)}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:24px}
+  .links{list-style:none; padding:0; margin:0; display:grid; grid-template-columns:1fr 1fr; gap:8px 24px}
+  .links li{border-bottom:1px solid var(--line); padding:8px 0; font-size:14px}
+  .links span{color:var(--muted)}
+  footer{padding:40px 0 64px; color:var(--muted); font-size:13px}
+  .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.86); display:none; align-items:center; justify-content:center; z-index:50; padding:24px; cursor:zoom-out}
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:100%; max-height:100%; border-radius:6px}
+
+  @media (max-width:760px){
+    header{padding:48px 0 28px}
+    .stats{grid-template-columns:1fr 1fr}
+    .cols,.lanes,.shots,.decisions,.grid2,.links{grid-template-columns:1fr}
+    section{padding:40px 0}
+    .lanes{gap:10px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">AI 产品 / 解决方案作品 · 个人项目</div>
+    <h1>售后智服</h1>
+    <p class="lede">给自营电商售后做的一个 AI 前置处理助手：<strong>能答的带政策出处直接答，需要查的用订单数据算，答不了的连 P1/P2/P3 工单摘要一起转人工。</strong></p>
+    <div class="meta">
+      <span>定位：技术型 AI 产品经理 / AI 解决方案工程师</span>
+      <span>独立完成（场景 / 知识库 / 工作流 / 评测 / 迭代 / 选型）</span>
+      <span>Dify 1.19 自托管 + DeepSeek + 通义 embedding</span>
+      <span>2026 年 11 月</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>28/30</b><small>一次解决率 93%</small></div>
+      <div class="stat"><b>6/6</b><small>应转人工全部转对</small></div>
+      <div class="stat"><b>0/30</b><small>幻觉</small></div>
+      <div class="stat"><b>7.0s</b><small>平均响应</small></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section id="problem">
+  <div class="wrap">
+    <h2><span class="idx">01</span>问题</h2>
+    <p class="sub">客服每天在处理同一批问题，而处理方式是串行的。</p>
+    <p>售后客服的日常：退换货条件、订单到哪了、能不能退、运费谁出、投诉怎么升级。现状是人工判断意图 → 翻 15 篇政策 → 切订单系统 → 组织话术，单次 3–5 分钟（估算）。</p>
+    <div class="cols">
+      <div class="card"><h4>重复劳动</h4><p>同一批规则每天被反复问，答案稳定但每次都要重新组织。</p></div>
+      <div class="card"><h4>信息割裂</h4><p>「我这单能不能退」要同时看订单日期、状态和品类政策，分散在两个系统里。</p></div>
+      <div class="card"><h4>口径不一</h4><p>新人记不住例外条款，投诉升级靠个人经验，同类问题答案不一致。</p></div>
+    </div>
+    <p style="margin-top:24px">关键判断：这个场景适合<strong>「检索 + 工具 + 路由」的 Chatflow</strong>，不适合一个万能提示词。因为政策可结构化、订单可查询、问题可分类，而且失败可以转人工。</p>
+  </div>
+</section>
+
+<section id="solution">
+  <div class="wrap">
+    <h2><span class="idx">02</span>方案</h2>
+    <p class="sub">一个 Chatflow，四路分流。</p>
+
+    <div class="flow">
+      <div class="flow-top">
+        <div class="node">用户输入</div>
+        <div class="arrow">→</div>
+        <div class="node primary">问题分类器</div>
+      </div>
+      <div class="lanes">
+        <div class="lane policy">
+          <b>政策</b>
+          <div class="step">知识检索（15 篇，Top 5）</div>
+          <div class="step">政策回答 + 引用出处</div>
+        </div>
+        <div class="lane order">
+          <b>订单 / 物流</b>
+          <div class="step">参数提取订单号</div>
+          <div class="step">代码节点查单算时效</div>
+          <div class="step">订单回答</div>
+        </div>
+        <div class="lane complaint">
+          <b>投诉</b>
+          <div class="step">工单摘要 P1 / P2 / P3</div>
+          <div class="step">安抚 + 转人工</div>
+        </div>
+        <div class="lane refuse">
+          <b>超范围</b>
+          <div class="step">固定话术拒答</div>
+          <div class="step">引导回售后范围</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="decisions">
+      <div class="decision"><b><span class="num">1</span>订单事实由代码算</b><p>下单天数、7 日窗口、发货超时、保修状态都是确定逻辑，模型只负责解释，不自行推算日期。</p></div>
+      <div class="decision"><b><span class="num">2</span>分类器用互斥规则</b><p>破损 / 退货 / 退款在政策、订单、物流里都出现，按关键词必错；三类判定写成互斥条件。</p></div>
+      <div class="decision"><b><span class="num">3</span>路由与生成分离</b><p>分类器固定小模型，生成模型可替换，已实测 DeepSeek ↔ Qwen 并记录差异。</p></div>
+      <div class="decision"><b><span class="num">4</span>无依据不硬答</b><p>检索不到、查无订单、赔付定责，一律转人工，并给出结构化摘要。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="wrap">
+    <h2><span class="idx">03</span>演示</h2>
+    <p class="sub">4 分钟，覆盖六个场景和一次转人工。</p>
+    <div class="video-box">
+      <video controls preload="metadata" playsinline poster="assets/web-app.png">
+        <source src="assets/demo-4min.mp4" type="video/mp4">
+        你的浏览器不支持内嵌视频，请<a href="assets/demo-4min.mp4">下载观看</a>。
+      </video>
+    </div>
+    <p class="video-note">录制于 2026-11-09，最终发布版本 <code>be016de2</code>，模型 <code>deepseek-flash</code>。视频保留了现场回答的真实波动，没有剪成「每条都对」。</p>
+
+    <div class="shots">
+      <figure class="shot"><img src="assets/policy-answer.png" alt="政策问答带引用"><figcaption>政策问答：带引用出处</figcaption></figure>
+      <figure class="shot"><img src="assets/order-policy.png" alt="订单加政策回答"><figcaption>订单 + 政策：先查单再判断</figcaption></figure>
+      <figure class="shot"><img src="assets/complaint.png" alt="投诉转人工工单摘要"><figcaption>投诉：P1/P2/P3 工单摘要转人工</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <h2><span class="idx">04</span>结果</h2>
+    <p class="sub">30 条分层评测，任务完成口径，判分代理独立判 + 边界项人工复核。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>指标</th><th>结果</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>一次解决率</td><td><b>28/30（93%）</b></td><td>统一「任务完成」口径</td></tr>
+          <tr><td>应转人工用例</td><td><b>6/6</b></td><td>摘要带 P1/P2/P3 分级</td></tr>
+          <tr><td>应拒答用例</td><td><b>3/3</b></td><td>超范围问题固定话术拒绝</td></tr>
+          <tr><td>政策类引用命中</td><td><b>11/11</b></td><td>检索片段命中期望文档</td></tr>
+          <tr><td>幻觉</td><td><b>0/30</b></td><td>与订单数据 / 知识库冲突的条数</td></tr>
+          <tr><td>平均响应</td><td><b>7.0s</b></td><td>p50 6.2s，max 17.1s</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:14px;color:var(--muted)">评测集 30 条，按 6 类场景分层：政策 8 / 订单 6 / 订单+政策 5 / 物流 4 / 投诉 4 / 超范围 3，含 4 条多轮、6 条应转人工、3 条应拒答。样本小，数字不代表线上指标。</p>
+  </div>
+</section>
+
+<section id="iteration">
+  <div class="wrap">
+    <h2><span class="idx">05</span>迭代故事</h2>
+    <p class="sub">这个项目最想展示的部分：不是「一次做对」，而是「评测 → 归因 → 改动 → 复测」的闭环。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>阶段</th><th>改动</th><th class="num">结果</th></tr></thead>
+        <tbody>
+          <tr><td>首版 Chatflow</td><td>基础四路分流</td><td class="num">21/30（70%）</td></tr>
+          <tr><td>第一次迭代</td><td>多轮记忆 + 订单时效布尔值（日期逻辑搬进代码节点）</td><td class="num">24/30（80%）</td></tr>
+          <tr><td>第二次迭代</td><td>分类器互斥规则 + 投诉 P2/P3 分级</td><td class="num"><b>28/30（93%）</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>两次改动都不是「调提示词试试」，而是从 badcase 定位到具体节点：</p>
+    <ul>
+      <li>订单题错 → 模型在自行推算日期 → 把日期逻辑搬进代码节点，输出「7 日窗口 = 是/否」「已超 48 小时」</li>
+      <li>物流题错 → 分类器把「破损 / 驿站」当成查单 → 重写三类互斥判定规则</li>
+      <li>投诉题错 → 摘要提示词没有分级 → 补 P2 / P3 规则，4 小时 / 30 分钟响应写入摘要</li>
+    </ul>
+    <div class="note">
+      <b>最终仍剩 2 条失败，报告里如实保留：</b><br>
+      E05：检索对了，模型漏「签收 24 小时内反馈」→ 模型能力不足。<br>
+      E19：检索没召回拒收条款 → 检索错。四次运行检索结果一致，不是随机波动。
+    </div>
+    <p style="font-size:14px;color:var(--muted)">一个能说明问题的细节：分类器互斥规则改完，政策类引用命中率从 8/11 回到 11/11 —— 检索链路一个字没改，只修了路由。</p>
+  </div>
+</section>
+
+<section id="boundaries">
+  <div class="wrap">
+    <h2><span class="idx">06</span>能力边界</h2>
+    <p class="sub">只做「规则、状态、路径」，不碰「钱、权、隐私」。</p>
+    <div class="grid2">
+      <ul>
+        <li>不承诺赔付金额，不代替人工定责（E25：拒绝「赔 1000 块」）</li>
+        <li>不执行退款、退货、改地址等写操作</li>
+        <li>不查他人订单，不提供地址 / 手机号</li>
+        <li>不回答售后之外的问题（E28–E30）</li>
+      </ul>
+      <div class="note blue">
+        <b>明确承认的边界：</b>当前 demo 没有身份核验。生产环境必须先补身份核验和审计，再开放订单查询 —— 这是 demo 与生产之间最大的一道边界。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="model">
+  <div class="wrap">
+    <h2><span class="idx">07</span>模型选型</h2>
+    <p class="sub">同一批 15 条、同一工作流，只换三个回答节点。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>模型</th><th class="num">通过</th><th class="num">单条 tokens</th><th class="num">平均延迟</th><th class="num">单条成本（粗估）</th></tr></thead>
+        <tbody>
+          <tr><td>DeepSeek <code>deepseek-flash</code></td><td class="num">13/15</td><td class="num">3,048</td><td class="num">7.3s</td><td class="num">≈0.0039 元</td></tr>
+          <tr><td>Qwen <code>qwen-plus</code></td><td class="num">12/15</td><td class="num">2,787</td><td class="num">7.3s</td><td class="num">≈0.0029 元</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><b>结论选 DeepSeek：</b>Qwen 更便宜，但把「订单已取消」答成「可直接申请退款」，这类指令遵循错误在售后会直接多一张工单。两者单次成本差 0.001 元，不是决策变量。</p>
+    <div class="note blue">
+      另一个发现：<b>63% 的 token 花在分类器与参数提取器</b>，生成只占 37%。降本应先压缩分类器提示词，而不是换生成模型。
+    </div>
+    <p style="font-size:13px;color:var(--muted)">成本为粗略估算：按 2026-11 公开标价近似，未计 embedding、存储与缓存命中；Dify 日志中该模型未配置价格，无法取真实账单。</p>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <h2><span class="idx">08</span>我做了什么</h2>
+    <ul>
+      <li>写 15 篇售后政策文档（适用范围 / 规则 / 例外 / 标准话术），建知识库与检索配置</li>
+      <li>造 30 条模拟订单 + 30 条分层评测集，定义 5 类失败归因</li>
+      <li>设计并搭 Chatflow：分类器、参数提取、代码查单、双路知识检索、三套回答提示词、工单摘要</li>
+      <li>写 Python 评测脚本：批量跑、多轮会话、判分合并、汇总指标</li>
+      <li>做两轮 badcase 归因与修复，模型对比与成本估算</li>
+    </ul>
+    <h3>材料</h3>
+    <ul class="links">
+      <li><a href="https://github.com/Lkccc-1/after-sales-agent-dify/blob/main/docs/01-scenario.md">场景定义</a> <span>· 问题与量化</span></li>
+      <li><a href="https://github.com/Lkccc-1/after-sales-agent-dify/blob/main/docs/02-journey.md">用户旅程</a> <span>· 6 步与介入点</span></li>
+      <li><a href="https://github.com/Lkccc-1/after-sales-agent-dify/blob/main/docs/03-boundaries.md">能力边界与风险</a> <span>· 20 问四分类</span></li>
+      <li><a href="https://github.com/Lkccc-1/after-sales-agent-dify/blob/main/docs/06-eval-report.md">评测报告</a> <span>· 30 条与失败归因</span></li>
+      <li><a href="https://github.com/Lkccc-1/after-sales-agent-dify/blob/main/docs/08b-model-and-cost.md">模型选型与成本</a> <span>· DeepSeek vs Qwen</span></li>
+      <li><a href="https://github.com/Lkccc-1/after-sales-agent-dify/blob/main/docs/09-solution.md">解决方案</a> <span>· 8 页完整版</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="fit">
+  <div class="wrap">
+    <h2><span class="idx">09</span>适合什么岗位</h2>
+    <p class="sub">这是一份 AI 产品 / 解决方案作品，不是后端工程交付。</p>
+    <div class="cols">
+      <div class="card"><h4>技术型 AI 产品经理</h4><p>场景定义、指标设计、badcase 归因、评测驱动迭代。</p></div>
+      <div class="card"><h4>AI 解决方案工程师 / 售前</h4><p>架构拆解、能力边界、成本测算、交付路径与风险。</p></div>
+      <div class="card"><h4>智能体搭建 / 实施</h4><p>Dify 自托管、知识库治理、工作流配置、上线验收。</p></div>
+    </div>
+    <p style="font-size:14px;color:var(--muted);margin-top:20px">工程实现部分：Dify 低代码工作流 + Python 评测脚本；不做后端服务开发。正在补 FastAPI 网关、Function Calling 与 RAG 对比实验，补完会更新本页。</p>
+  </div>
+</section>
+
+<section id="limits">
+  <div class="wrap">
+    <h2><span class="idx">10</span>已知局限</h2>
+    <ul>
+      <li>评测是 30 条分层小样本，判分为人工 + 判分代理，不代表线上指标</li>
+      <li>订单数据是 30 条模拟数据，未接真实订单系统</li>
+      <li>没有身份核验、没有工单系统对接、没有写操作</li>
+      <li>豆包模型无 Key，未实测，只做了公开价格对比</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    售后智服 · 个人项目 · 2026 年 11 月 · 全部材料见 <a href="https://github.com/Lkccc-1/after-sales-agent-dify">GitHub 仓库</a>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox"><img alt=""></div>
+<script>
+  const lb = document.getElementById('lightbox');
+  const lbImg = lb.querySelector('img');
+  document.querySelectorAll('.shot img').forEach(img => {
+    img.addEventListener('click', () => { lbImg.src = img.src; lb.classList.add('open'); });
+  });
+  lb.addEventListener('click', () => lb.classList.remove('open'));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+</script>
+</body>
+</html>
