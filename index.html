@@ -319,9 +319,35 @@
   </div>
 </section>
 
+<section id="engineering">
+  <div class="wrap">
+    <h2><span class="idx">09</span>工程补强</h2>
+    <p class="sub">把「能演示」补成「能复现」：产品链路之外，补了网关、工具层、检索实验与 MCP 服务。</p>
+    <div class="grid2">
+      <div class="card">
+        <h4><a href="https://github.com/Lkccc-1/after-sales-agent/blob/master/gateway/bench.md">FastAPI 网关与压测</a></h4>
+        <p>100 次 / 20 并发：p50 14.1s、p95 18.2s、错误率 0%。含超时重试、trace_id 结构化日志；网页端已加代码节点剥离思维链。</p>
+      </div>
+      <div class="card">
+        <h4><a href="https://github.com/Lkccc-1/after-sales-agent/blob/master/tools/report.md">Function Calling 工具层</a></h4>
+        <p>DeepSeek 工具循环 + 11 条用例：工具选择 11/11、参数 11/11；预标注 9/11，复核后确认 2 条是标注过严。</p>
+      </div>
+      <div class="card">
+        <h4><a href="https://github.com/Lkccc-1/after-sales-agent/blob/master/rag/report.md">RAG 检索对比</a></h4>
+        <p>LlamaIndex + bge-small-zh，3 种分段 × 2 种 TopK。文档召回全部满分，用 top1 / MRR / 条款召回定位「500 字 + TopK 3 会切断保修条款」。</p>
+      </div>
+      <div class="card">
+        <h4><a href="https://github.com/Lkccc-1/after-sales-agent/blob/master/assets/mcp-inspector.png">MCP Server</a></h4>
+        <p>把订单查询与政策检索暴露为 2 个 MCP 工具，外部客户端可列出并调用；截图来自 MCP Inspector 实际运行。</p>
+      </div>
+    </div>
+    <p style="font-size:14px;color:var(--muted);margin-top:20px">工程仓库：<a href="https://github.com/Lkccc-1/after-sales-agent">Lkccc-1/after-sales-agent</a>（代码、原始结果、复现命令）· 产品材料：<a href="https://github.com/Lkccc-1/after-sales-agent-dify">after-sales-agent-dify</a></p>
+  </div>
+</section>
+
 <section id="fit">
   <div class="wrap">
-    <h2><span class="idx">09</span>适合什么岗位</h2>
+    <h2><span class="idx">10</span>适合什么岗位</h2>
     <p class="sub">产品向：AI 产品 / 解决方案；工程向：智能体应用开发。</p>
     <div class="cols">
       <div class="card"><h4>技术型 AI 产品经理</h4><p>场景定义、指标设计、badcase 归因、评测驱动迭代。</p></div>
@@ -329,13 +355,13 @@
       <div class="card"><h4>智能体搭建 / 实施</h4><p>Dify 自托管、知识库治理、工作流配置、上线验收。</p></div>
       <div class="card"><h4>AI 智能体开发（工程补强）</h4><p>FastAPI 网关（重试 / trace_id 日志 / 20 并发压测）、Function Calling 工具集、LlamaIndex RAG 对比、MCP Server。</p></div>
     </div>
-    <p style="font-size:14px;color:var(--muted);margin-top:20px">工程实现：Dify Chatflow + FastAPI 网关 + 独立工具层。已完成 100 次 / 20 并发压测（p95 18.2s、错误率 0%）、11 条 Function Calling 用例、3×2 组 RAG 召回对比与 MCP 工具验证；原始数据与复现命令在工程仓库。</p>
+    <p style="font-size:14px;color:var(--muted);margin-top:20px">工程实现：Dify Chatflow + FastAPI 网关 + 独立工具层。已完成 100 次 / 20 并发压测（p95 18.2s、错误率 0%）、11 条 Function Calling 用例、3×2 组 RAG 召回对比与 MCP 工具验证；原始数据与复现命令在<a href="https://github.com/Lkccc-1/after-sales-agent">工程仓库</a>。</p>
   </div>
 </section>
 
 <section id="limits">
   <div class="wrap">
-    <h2><span class="idx">10</span>已知局限</h2>
+    <h2><span class="idx">11</span>已知局限</h2>
     <ul>
       <li>评测是 30 条分层小样本，判分为人工 + 判分代理，不代表线上指标</li>
       <li>订单数据是 30 条模拟数据，未接真实订单系统</li>
@@ -349,7 +375,7 @@
 
 <footer>
   <div class="wrap">
-    售后智服 · 个人项目 · 2026 年 11 月 · 全部材料见 <a href="https://github.com/Lkccc-1/after-sales-agent-dify">GitHub 仓库</a>
+    售后智服 · 个人项目 · 2026 年 11 月 · 产品材料 <a href="https://github.com/Lkccc-1/after-sales-agent-dify">GitHub</a> · 工程实现 <a href="https://github.com/Lkccc-1/after-sales-agent">GitHub</a>
   </div>
 </footer>
 
