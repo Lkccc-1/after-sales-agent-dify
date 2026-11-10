@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>售后智服 · AI 产品 / 解决方案作品（Dify Chatflow）</title>
-<meta name="description" content="AI 产品 / 解决方案作品：一个会查订单、会查政策、该转人工就转人工的电商售后 AI 助手。30 条分层评测 28/30，平均响应 7.0s。">
+<title>售后智服 · 电商售后 AI 智能体（Dify Chatflow）</title>
+<meta name="description" content="电商售后 AI 智能体：会查订单、会查政策、该转人工就转人工。30 条分层评测 28/30，平均响应 7.0s。">
 <style>
   :root{
     --ink:#17181a; --muted:#6b7280; --line:#e6e4df; --bg:#fbfaf7;
@@ -109,11 +109,11 @@
 
 <header>
   <div class="wrap">
-    <div class="kicker">AI 产品 / 解决方案作品 · 个人项目</div>
+    <div class="kicker">电商售后 AI 智能体 · 项目实录</div>
     <h1>售后智服</h1>
     <p class="lede">给自营电商售后做的一个 AI 前置处理助手：<strong>能答的带政策出处直接答，需要查的用订单数据算，答不了的连 P1/P2/P3 工单摘要一起转人工。</strong></p>
     <div class="meta">
-      <span>定位：技术型 AI 产品经理 / AI 解决方案工程师</span>
+      <span>场景：自营电商售后（退换货 / 保修 / 物流 / 投诉）</span>
       <span>独立完成（场景 / 知识库 / 工作流 / 评测 / 迭代 / 选型）</span>
       <span>Dify 1.19 自托管 + DeepSeek + 通义 embedding</span>
       <span>2026 年 11 月</span>
@@ -321,8 +321,8 @@
 
 <section id="engineering">
   <div class="wrap">
-    <h2><span class="idx">09</span>工程补强</h2>
-    <p class="sub">把「能演示」补成「能复现」：产品链路之外，补了网关、工具层、检索实验与 MCP 服务。</p>
+    <h2><span class="idx">09</span>工程实现</h2>
+    <p class="sub">产品链路之外，另有可复现的工程实现：网关、工具层、检索实验与 MCP 服务。</p>
     <div class="grid2">
       <div class="card">
         <h4><a href="https://github.com/Lkccc-1/after-sales-agent/blob/master/gateway/bench.md">FastAPI 网关与压测</a></h4>
@@ -345,23 +345,9 @@
   </div>
 </section>
 
-<section id="fit">
-  <div class="wrap">
-    <h2><span class="idx">10</span>适合什么岗位</h2>
-    <p class="sub">产品向：AI 产品 / 解决方案；工程向：智能体应用开发。</p>
-    <div class="cols">
-      <div class="card"><h4>技术型 AI 产品经理</h4><p>场景定义、指标设计、badcase 归因、评测驱动迭代。</p></div>
-      <div class="card"><h4>AI 解决方案工程师 / 售前</h4><p>架构拆解、能力边界、成本测算、交付路径与风险。</p></div>
-      <div class="card"><h4>智能体搭建 / 实施</h4><p>Dify 自托管、知识库治理、工作流配置、上线验收。</p></div>
-      <div class="card"><h4>AI 智能体开发（工程补强）</h4><p>FastAPI 网关（重试 / trace_id 日志 / 20 并发压测）、Function Calling 工具集、LlamaIndex RAG 对比、MCP Server。</p></div>
-    </div>
-    <p style="font-size:14px;color:var(--muted);margin-top:20px">工程实现：Dify Chatflow + FastAPI 网关 + 独立工具层。已完成 100 次 / 20 并发压测（p95 18.2s、错误率 0%）、11 条 Function Calling 用例、3×2 组 RAG 召回对比与 MCP 工具验证；原始数据与复现命令在<a href="https://github.com/Lkccc-1/after-sales-agent">工程仓库</a>。</p>
-  </div>
-</section>
-
 <section id="limits">
   <div class="wrap">
-    <h2><span class="idx">11</span>已知局限</h2>
+    <h2><span class="idx">10</span>已知局限</h2>
     <ul>
       <li>评测是 30 条分层小样本，判分为人工 + 判分代理，不代表线上指标</li>
       <li>订单数据是 30 条模拟数据，未接真实订单系统</li>
